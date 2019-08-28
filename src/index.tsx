@@ -4,7 +4,7 @@
 
 import React from 'react';
 
-import styles from './styles.scss';
+import styles from './styles.module.less';
 
 export interface Props {
   text: string;

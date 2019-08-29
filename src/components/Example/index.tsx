@@ -10,7 +10,7 @@ export interface Props {
   text: string;
 }
 
-export default class ExampleComponent extends React.Component<Props> {
+export class ExampleComponent extends React.Component<Props> {
   render() {
     const { text } = this.props;
 

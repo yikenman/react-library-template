@@ -7,6 +7,7 @@ module.exports = async ({ config, mode }) => {
 
   // Make whatever fine-grained changes you need
   config = addLessLoader()(config, mode);
+  consig = addJavascriptEnableInStyleLoaders()(config, mode);
 
   // Return the altered config
   return config;
@@ -57,7 +58,7 @@ var addLessLoader = (loaderOptions = {}) => (config, mode) => {
       {
         loader: require.resolve('less-loader'),
         options: Object.assign(loaderOptions, {
-          source: shouldUseSourceMap
+          sourceMap: shouldUseSourceMap
         })
       }
     ];
@@ -87,5 +88,23 @@ var addLessLoader = (loaderOptions = {}) => (config, mode) => {
     }
   );
 
+  return config;
+};
+
+var addJavascriptEnableInStyleLoaders = () => (config, mode) => {
+  const loaders = config.module.rules;
+  const sassOrLessTestRules = [
+    '/\\.(scss|sass)$/',
+    '/\\.module\\.(scss|sass)$/',
+    '/\\.less$/',
+    '/\\.module\\.less$/'
+  ];
+  loaders.forEach(loader => {
+    const testRule = loader.test.toString();
+    if (sassOrLessTestRules.indexOf(testRule) > -1) {
+      const loaderUse = loader.use;
+      loaderUse[loaderUse.length - 1].options['javascriptEnabled'] = true;
+    }
+  });
   return config;
 };

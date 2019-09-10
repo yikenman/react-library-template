@@ -9,6 +9,17 @@ module.exports = async ({ config, mode }) => {
   config = addLessLoader()(config, mode);
   consig = addJavascriptEnableInStyleLoaders()(config, mode);
 
+  config.module.rules.push({
+    test: /\.tsx?$/,
+    loaders: [
+      {
+        loader: require.resolve('@storybook/addon-storysource/loader'),
+        options: { parser: 'typescript' }
+      }
+    ],
+    enforce: 'pre'
+  });
+
   // Return the altered config
   return config;
 };

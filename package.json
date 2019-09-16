@@ -5,7 +5,7 @@
   "author": "yikenman",
   "license": "MIT",
   "repository": "https://www.github.com/yikenman/react-library-template",
-  "main": "build/index.js",
+  "main": "build/lib/index.js",
   "module": "build/es/index.es.js",
   "engines": {
     "node": ">=8",
@@ -69,6 +69,6 @@
     "typescript": "^3.5.3"
   },
   "files": [
-    "dist"
+    "build"
   ]
 }

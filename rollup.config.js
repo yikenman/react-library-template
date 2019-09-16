@@ -50,10 +50,12 @@ const plugins2 = [
   commonjs()
 ];
 
-const outDirES = 'build/es';
-
 const componentDir = 'src/components';
 const componentNames = fs.readdirSync(path.resolve(componentDir));
+const outDirES = pkg.module
+  .split('/')
+  .slice(0, -1)
+  .join('/');
 
 const rollupConfigs = componentNames.reduce((arr, name) => {
   if (name !== 'index.ts') {
@@ -61,7 +63,7 @@ const rollupConfigs = componentNames.reduce((arr, name) => {
       input: `${componentDir}/${name}/index.tsx`,
       output: [
         {
-          dir: `${outDirES}/components/${name}`,
+          dir: `${outDirES}/${name}`,
           entryFileNames: '[name].es.js',
           exports: 'named',
           sourcemap: true,
@@ -71,7 +73,7 @@ const rollupConfigs = componentNames.reduce((arr, name) => {
       plugins: [
         postcss({
           modules: true,
-          extract: `${outDirES}/components/${name}/styles/index.css`
+          extract: `${outDirES}/${name}/styles/index.css`
         }),
         ...plugins
       ]

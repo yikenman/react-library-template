@@ -6,7 +6,6 @@ import resolve from 'rollup-plugin-node-resolve';
 import url from 'rollup-plugin-url';
 import svgr from '@svgr/rollup';
 import pkg from './package.json';
-
 import fs from 'fs';
 import path from 'path';
 
@@ -28,34 +27,6 @@ const plugins = [
   }),
   commonjs()
 ];
-
-const componentDir = 'src/components';
-const componentNames = fs.readdirSync(path.resolve(componentDir));
-
-const componentConfigs = componentNames.reduce((acc, name) => {
-  const inputPath = `${componentDir}/${name}/index.tsx`;
-  acc.push({
-    input: inputPath,
-    output: [
-      {
-        dir: `dist/es/components/${name}`,
-        entryFileNames: '[name].es.js',
-        exports: 'named',
-        sourcemap: true,
-        format: 'es'
-      }
-    ],
-    plugins: [
-      postcss({
-        modules: true,
-        extract: `dist/es/components/${name}/styles/index.css`
-      }),
-      ...plugins
-    ]
-  });
-  return acc;
-}, []);
-
 const plugins2 = [
   external(),
   postcss({
@@ -79,33 +50,62 @@ const plugins2 = [
   commonjs()
 ];
 
-const configs = [
-  {
-    input: 'src/index.ts',
-    output: [
-      {
-        file: pkg.module,
-        format: 'es',
-        entryFileNames: '[name].es.js', // 输出文件名
-        exports: 'named',
-        sourcemap: true
-      }
-    ],
-    plugins: plugins2
-  },
-  {
-    input: 'src/index.ts',
-    output: [
-      {
-        file: pkg.main,
-        format: 'cjs',
-        entryFileNames: '[name].js', // 输出文件名
-        exports: 'named',
-        sourcemap: true
-      }
-    ],
-    plugins: plugins2
-  }
-];
+const outDirES = 'build/es';
 
-export default configs.concat(componentConfigs);
+const componentDir = 'src/components';
+const componentNames = fs.readdirSync(path.resolve(componentDir));
+
+const rollupConfigs = componentNames.reduce((arr, name) => {
+  if (name !== 'index.ts') {
+    arr.push({
+      input: `${componentDir}/${name}/index.tsx`,
+      output: [
+        {
+          dir: `${outDirES}/components/${name}`,
+          entryFileNames: '[name].es.js',
+          exports: 'named',
+          sourcemap: true,
+          format: 'es'
+        }
+      ],
+      plugins: [
+        postcss({
+          modules: true,
+          extract: `${outDirES}/components/${name}/styles/index.css`
+        }),
+        ...plugins
+      ]
+    });
+  } else {
+    console.log('is index.ts');
+    arr.push({
+      input: `${componentDir}/index.ts`,
+      output: [
+        {
+          file: pkg.module,
+          format: 'es',
+          entryFileNames: '[name].es.js',
+          exports: 'named',
+          sourcemap: true
+        }
+      ],
+      plugins: plugins2
+    });
+    arr.push({
+      input: `${componentDir}/index.ts`,
+      output: [
+        {
+          file: pkg.main,
+          format: 'cjs',
+          entryFileNames: '[name].js',
+          exports: 'named',
+          sourcemap: true
+        }
+      ],
+      plugins: plugins2
+    });
+  }
+  return arr;
+}, []);
+console.dir(rollupConfigs);
+export default rollupConfigs;

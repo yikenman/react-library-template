@@ -5,8 +5,8 @@
   "author": "yikenman",
   "license": "MIT",
   "repository": "https://www.github.com/yikenman/react-library-template",
-  "main": "dist/index.js",
-  "module": "dist/es/index.es.js",
+  "main": "build/index.js",
+  "module": "build/es/index.es.js",
   "engines": {
     "node": ">=8",
     "npm": ">=5"
@@ -14,11 +14,11 @@
   "scripts": {
     "test": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-app test --env=jsdom",
-    "build": "rm -rf ./dist && rollup -c",
-    "start": "rm -rf ./dist && rollup -c -w",
+    "build": "rm -rf ./build && rollup -c",
+    "start": "rm -rf ./build && rollup -c -w",
     "storybook": "start-storybook -p 9009",
     "build-storybook": "rm -rf ./storybook-static && build-storybook",
-    "clean": "rm -rf ./storybook-static ./dist"
+    "clean": "rm -rf ./storybook-static ./build"
   },
   "dependencies": {},
   "peerDependencies": {

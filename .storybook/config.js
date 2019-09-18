@@ -33,7 +33,7 @@ addParameters({
 });
 
 // automatically import all files in stories folder
-const req = require.context('../src/stories', true, /\.tsx$/);
+const req = require.context('../src/stories', true, /\.stories\.tsx$/);
 
 function loadStories() {
   req.keys().forEach(req);

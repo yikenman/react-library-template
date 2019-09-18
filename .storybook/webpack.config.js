@@ -10,13 +10,8 @@ module.exports = async ({ config, mode }) => {
   consig = addJavascriptEnableInStyleLoaders()(config, mode);
 
   config.module.rules.push({
-    test: /\.tsx?$/,
-    loaders: [
-      {
-        loader: require.resolve('@storybook/addon-storysource/loader'),
-        options: { parser: 'typescript' }
-      }
-    ],
+    test: /\.stories\.jsx?$/,
+    loaders: [require.resolve('@storybook/source-loader')],
     enforce: 'pre'
   });
 

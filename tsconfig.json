@@ -26,6 +26,6 @@
     "baseUrl": "src",
     "isolatedModules": true
   },
-  "include": ["src"],
+  "include": ["src", "src/stories"],
   "exclude": ["src/stories"]
 }

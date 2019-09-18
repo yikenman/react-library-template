@@ -9,7 +9,7 @@ module.exports = async ({ config, mode }) => {
   config = addLessLoader()(config, mode);
   consig = addJavascriptEnableInStyleLoaders()(config, mode);
 
-  config.module.rules.push({
+  config.module.rules.unshift({
     test: /\.stories\.tsx?$/,
     loaders: [
       {
